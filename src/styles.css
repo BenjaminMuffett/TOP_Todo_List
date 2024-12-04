@@ -1,3 +1,41 @@
-body {
+* {
+    margin: 0px;
+}
+#container {
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    grid-template-rows: 1fr 9fr;
+    grid-template-areas: 
+    "profile menu"
+    "sidebar workspace";
+}
+
+.dot {
+    height: 25px;
+    width: 25px;
+    border-radius: 50%;
+    background-color: black;
+    display: inline-block;
+}
+
+#profile {
+    grid-area: profile;
+    background-color: aqua;
+    padding: 10px;
+}
+
+#menu {
+    grid-area: menu;
+    background-color: blue;
+}
+
+#sidebar {
+    grid-area: sidebar;
     background-color: rebeccapurple;
+}
+
+#workspace {
+    grid-area: workspace;
+    background-color: purple;
+    grid-template-columns: 1fr 1fr 1fr;
 }
