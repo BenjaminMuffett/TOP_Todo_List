@@ -8,6 +8,7 @@
     grid-template-areas: 
     "profile menu"
     "sidebar workspace";
+    height: 100vh;
 }
 
 .dot {
@@ -36,6 +37,21 @@
 
 #workspace {
     grid-area: workspace;
-    background-color: purple;
+    background-color: rgb(207, 6, 207);
     grid-template-columns: 1fr 1fr 1fr;
+    padding: 8px;
 }
+
+.project {
+    display: grid;
+    max-width: 300px;
+    border: 1px solid black;
+    /* max-width: clamp(200px, 1fr, 500px); */
+}
+
+.header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+

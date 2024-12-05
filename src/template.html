@@ -18,8 +18,38 @@
             </div>
         </div>
         <div id="workspace">
-            <div class="default"></div>
+            <div class="project">
+                <div class="header">
+                    <div class="title" contenteditable="true">Default Project</div>
+                    <button class="addTodo">+</button>
+                </div>
+                <div class="todo"></div>
+            </div>
         </div>
     </div>
+    <dialog id="newTodo">
+        <form>
+            <div>
+                <label for="todo-title">Title</label>
+                <input type="text" name="todo-title" id="todo-title" required>
+            </div>
+            <div>
+                <label for="todo-description">Description</label>
+                <input type="text" name="todo-description" id="todo-description">
+            </div>
+            <div>
+                <label for="todo-dueDate">Due Date</label>
+                <input type="text" name="todo-dueDate" id="todo-dueDate">
+            </div>
+            <div>
+                <label for="todo-priority">Priority</label>
+                <input type="number" name="todo-priority" id="todo-priority">
+            </div>
+            <div>
+                <button value="cancel" formaction="dialog">Cancel</button>
+                <button id="confirmBtn" value="default">Add Todo</button>
+            </div>
+        </form>
+    </dialog>
 </body>
 </html>
