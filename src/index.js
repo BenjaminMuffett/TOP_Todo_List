@@ -22,8 +22,14 @@ function validateTodo() {
         alert("Please fill out the title of your Todo.");
         return false;
     } else {
+        console.log(entry);
         return true;
     }
+}
+
+function addTodoDOM(todoObj, event) {
+    const parentElement = document.getElementsByClassName("addTodo").parentNode;
+    return console.log(parentElement);
 }
 
 const todoDialog = document.querySelector("#newTodo");
@@ -44,12 +50,12 @@ cancelBtn.addEventListener("click", (event) => {
 const confirmBtn = document.querySelector("#confirmBtn");
 confirmBtn.addEventListener("click", (event) => {
     event.preventDefault();
-    if (validateTodo === true) {
+    if (validateTodo() == true) {
         let testCat = createTodoObject()
         console.log(testCat);
+        addTodoDOM(testCat, event);
         todoDialog.close();
     }
-    validateTodo();
     // let testCat = createTodoObject()
     // console.log(testCat);
     // let v = createTodoObject(todoTitle.value, todoDescription.value, todoDueDate.value, todoPriority.value);
