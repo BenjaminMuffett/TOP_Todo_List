@@ -16,16 +16,15 @@ function createTodoObject() {
     return { title, info, dueDate, importance };
 }
 
-// function clearDialog(modal) {
-//     // const todoTitle = document.querySelector("#todo-title");
-//     // const todoDescription = document.querySelector("#todo-description");
-//     // const todoDueDate = document.querySelector("#todo-dueDate");
-//     // const todoPriority = document.querySelector("#todo-priority");
-//     modal.title = '';
-//     modal.info = '';
-//     modal.dueDate = '';
-//     modal.importance = '';
-// }
+function validateTodo() {
+    let entry = document.forms["todo-form"]["todo-title"].value;
+    if (entry == '') {
+        alert("Please fill out the title of your Todo.");
+        return false;
+    } else {
+        return true;
+    }
+}
 
 const todoDialog = document.querySelector("#newTodo");
 const newTodoBtn = document.querySelector(".addTodo");
@@ -45,11 +44,17 @@ cancelBtn.addEventListener("click", (event) => {
 const confirmBtn = document.querySelector("#confirmBtn");
 confirmBtn.addEventListener("click", (event) => {
     event.preventDefault();
-    let testCat = createTodoObject()
-    console.log(testCat);
+    if (validateTodo === true) {
+        let testCat = createTodoObject()
+        console.log(testCat);
+        todoDialog.close();
+    }
+    validateTodo();
+    // let testCat = createTodoObject()
+    // console.log(testCat);
     // let v = createTodoObject(todoTitle.value, todoDescription.value, todoDueDate.value, todoPriority.value);
     // console.log(v);
-    todoDialog.close();
+    // todoDialog.close();
 });
 
 
