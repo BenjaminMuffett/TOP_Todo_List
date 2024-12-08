@@ -62,22 +62,36 @@ confirmBtn.addEventListener("click", (event) => {
         addTodoDOM(todoObj);
         todoDialog.close();
     }
-    // let testCat = createTodoObject()
-    // console.log(testCat);
-    // let v = createTodoObject(todoTitle.value, todoDescription.value, todoDueDate.value, todoPriority.value);
-    // console.log(v);
-    // todoDialog.close();
 });
 
 
+const newProjectBtn = document.querySelector("#create-project");
+newProjectBtn.addEventListener("click", () => {
+    displayProject();
+    console.log("Why hello there.")
+});
 
-
-function createProject() {
-    // will be called when new project button is clicked.
-    //create blank project list 
+function createProject(projectName) {
+    let projectDiv = document.createElement("div");
+    projectDiv.classList.add("project");
+    let headerDiv = document.createElement("div");
+    headerDiv.classList.add("header");
+    let titleDiv = document.createElement("div");
+    titleDiv.classList.add("title");
+    titleDiv.contentEditable = true;
+    titleDiv.textContent = projectName;
+    headerDiv.appendChild(titleDiv);
+    let btnDiv = document.createElement("button");
+    btnDiv.classList.add("addTodo");
+    btnDiv.textContent = '+';
+    headerDiv.appendChild(btnDiv);
+    projectDiv.appendChild(headerDiv);
+    return projectDiv
 }
 
 function displayProject() {
-    //will be called when new project button is clicked.
-    // will add the created blank project to the DOM
+    const workspaceDiv = document.querySelector("#workspace");
+    let userProject = prompt("Please enter the name of your new project.");
+    let newDiv = createProject(userProject);
+    return workspaceDiv.appendChild(newDiv); 
 }

@@ -39,9 +39,22 @@
     padding: 8px;
 }
 
+#sidebar button {
+    padding: 8px 16px;
+    border-radius: 5px;
+    background-color: #bbc1c6;
+    border: 1px solid lightslategray;
+}
+
+button:hover {
+    cursor: pointer;
+}
+
 #workspace {
     grid-area: workspace;
     background-color: #6d5593;
+    display: grid;
+    align-items: start;
     grid-template-columns: 1fr 1fr 1fr;
     padding: 8px;
 }
@@ -49,7 +62,7 @@
 .project {
     display: grid;
     max-width: 300px;
-    border: 1px solid black;
+    border: 1px solid lightslategray;
     border-radius: 3%;
     background-color: #bbc1c6;
     padding: 8px;
@@ -79,3 +92,7 @@
     cursor: pointer;
 }
 
+dialog {
+    justify-self: center;
+    /* align-self: center; */
+}
