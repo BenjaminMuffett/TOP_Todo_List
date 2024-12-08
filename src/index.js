@@ -22,14 +22,20 @@ function validateTodo() {
         alert("Please fill out the title of your Todo.");
         return false;
     } else {
-        console.log(entry);
         return true;
     }
 }
 
-function addTodoDOM(todoObj, event) {
-    const parentElement = document.getElementsByClassName("addTodo").parentNode;
-    return console.log(parentElement);
+function addTodoDOM(todoObj) {
+    const parentProjectElement = document.querySelector(".addTodo").parentNode.parentNode;
+    const todoDiv = document.createElement("div");
+    todoDiv.classList.add("todo");
+    for (var key in todoObj) {
+        let entryLine = document.createElement("p");
+        entryLine.textContent = `${todoObj[key]}`
+        todoDiv.appendChild(entryLine);
+    }
+    return parentProjectElement.appendChild(todoDiv);
 }
 
 const todoDialog = document.querySelector("#newTodo");
@@ -51,9 +57,9 @@ const confirmBtn = document.querySelector("#confirmBtn");
 confirmBtn.addEventListener("click", (event) => {
     event.preventDefault();
     if (validateTodo() == true) {
-        let testCat = createTodoObject()
-        console.log(testCat);
-        addTodoDOM(testCat, event);
+        let todoObj = createTodoObject()
+        console.log(todoObj);
+        addTodoDOM(todoObj);
         todoDialog.close();
     }
     // let testCat = createTodoObject()

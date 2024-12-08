@@ -21,23 +21,27 @@
 
 #profile {
     grid-area: profile;
-    background-color: aqua;
+    background-color: #546da6;
     padding: 10px;
 }
 
 #menu {
     grid-area: menu;
-    background-color: blue;
+    background-color: #465892;
 }
 
 #sidebar {
     grid-area: sidebar;
-    background-color: rebeccapurple;
+    background-color: #543d7b;
+    display: grid;
+    justify-content: center;
+    gap: 16px;
+    padding: 8px;
 }
 
 #workspace {
     grid-area: workspace;
-    background-color: rgb(207, 6, 207);
+    background-color: #6d5593;
     grid-template-columns: 1fr 1fr 1fr;
     padding: 8px;
 }
@@ -46,12 +50,32 @@
     display: grid;
     max-width: 300px;
     border: 1px solid black;
+    border-radius: 3%;
+    background-color: #bbc1c6;
+    padding: 8px;
+    gap: 4px;
+    /* background-color: #968eaf; */
     /* max-width: clamp(200px, 1fr, 500px); */
 }
 
 .header {
     display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
+    justify-content: space-between;
+    padding: 8px;
+    font-size: 1.5rem;
+}
+
+.todo {
+    padding: 8px;
+    font-size: 1.1rem;
+    line-height: 1.1;
+    background-color: #f4faff;
+    border: 1px solid lightslategray;
+    border-radius: 10px;
+}
+
+.todo:hover {
+    cursor: pointer;
 }
 
