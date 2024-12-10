@@ -25,9 +25,14 @@ function validateTodo() {
         return true;
     }
 }
+
 // need to edit so the parentProjectElement references the correct project, not just the first one.
-function addTodoDOM(todoObj) {
-    const parentProjectElement = document.querySelector(".addTodo").parentNode.parentNode;
+function createTodoElement(todoObj) {
+    // const parentProjectElement = document.querySelector(".addTodo").parentNode.parentNode;
+    // let parentElement = fromEle;
+    // console.log(parentElement);
+    // let idNodeList = document.getElementsByClassName("header");
+    // console.log(idNodeList);
     const todoDiv = document.createElement("div");
     todoDiv.classList.add("todo");
     for (var key in todoObj) {
@@ -35,10 +40,13 @@ function addTodoDOM(todoObj) {
         entryLine.textContent = `${todoObj[key]}`
         todoDiv.appendChild(entryLine);
     }
-    return parentProjectElement.appendChild(todoDiv);
+    return todoDiv;
+    // return parentProjectElement.appendChild(todoDiv);
 }
 
-const todoDialog = document.querySelector("#newTodo");
+function addTodoDOM(TodoElement, eventLocation) {
+
+}
 
 // const newTodoBtn = document.getElementsByClassName("addTodo");
 // const newTodoBtn = document.querySelector(".addTodo");
@@ -58,17 +66,17 @@ const todoDialog = document.querySelector("#newTodo");
 //     })
 // });
 // Default Project event listener 
-let headerNodeList = document.getElementsByClassName("header");
-for (let btn of headerNodeList) {
-    btn.addEventListener("click", function(e) {
-        console.log(e.target);
-        if (e.target.matches(".addTodo")) {
-            todoDialog.showModal();
-            const todoForm = document.querySelector("#todo-form");
-            todoForm.reset();
-        }
-    })
-};
+// let headerNodeList = document.getElementsByClassName("header");
+// for (let btn of headerNodeList) {
+//     btn.addEventListener("click", function(e) {
+//         console.log(e.target);
+//         if (e.target.matches(".addTodo")) {
+//             todoDialog.showModal();
+//             const todoForm = document.querySelector("#todo-form");
+//             todoForm.reset();
+//         }
+//     })
+// };
 
 // Array.from(headerNodeList).forEach(btn => {
 //     btn.addEventListener("click", function(e) {
@@ -81,7 +89,10 @@ for (let btn of headerNodeList) {
 // })
 // });
 
-const cancelBtn = document.querySelector(".cancelBtn");
+// Related to the modal buttons  
+const todoDialog = document.querySelector("#newTodo");
+
+const cancelBtn = document.querySelector("#cancelBtn");
 cancelBtn.addEventListener("click", (event) => {
     event.preventDefault();
     todoDialog.close();
@@ -91,18 +102,28 @@ const confirmBtn = document.querySelector("#confirmBtn");
 confirmBtn.addEventListener("click", (event) => {
     event.preventDefault();
     if (validateTodo() == true) {
-        let todoObj = createTodoObject();
-        console.log(todoObj);
-        addTodoDOM(todoObj);
         todoDialog.close();
     }
 });
 
+const modalTodoTitle = document.querySelector("#todo-form");
+modalTodoTitle.addEventListener("keydown", (event) => {
+    if (event.code === 'Enter') {
+        event.preventDefault();
+        if (validateTodo() == true) {
+            // let todoObj = createTodoObject();
+            // console.log(todoObj);
+            // addTodoDOM(todoObj);
+            todoDialog.close();
+        }
+    }
+})
+// End of modal responsibilities.
 
+// Related to Project blocks
 const newProjectBtn = document.querySelector("#create-project");
 newProjectBtn.addEventListener("click", () => {
     displayProject();
-    console.log("Why hello there.")
 });
 
 function createProject(projectName) {
@@ -114,6 +135,7 @@ function createProject(projectName) {
     titleDiv.classList.add("title");
     titleDiv.contentEditable = true;
     titleDiv.textContent = projectName;
+    titleDiv.setAttribute('id', projectName);
     headerDiv.appendChild(titleDiv);
     let btnDiv = document.createElement("button");
     btnDiv.classList.add("addTodo");
@@ -126,12 +148,29 @@ function createProject(projectName) {
 function displayProject() {
     const workspaceDiv = document.querySelector("#workspace");
     let userProject = prompt("Please enter the name of your new project.");
+    if (validateNewProject(userProject) == false) {
+        return
+    };
     let newDiv = createProject(userProject);
     const newTodoBtn = newDiv.querySelector(".addTodo");
-    newTodoBtn.addEventListener("click", () => {
+    var selfDivValue;
+    newTodoBtn.addEventListener("click", (event) => {
         todoDialog.showModal();
         const todoForm = document.querySelector("#todo-form");
+        let todoObj = createTodoObject()
+        let todoElement = createTodoElement(todoObj);
+        let selfDivValue = event.target.parentNode.parentNode;
+        selfDivValue.appendChild(todoElement);
         todoForm.reset();
     });
     return workspaceDiv.appendChild(newDiv); 
+};
+
+function validateNewProject(name) {
+    if (name == '') {
+        alert("Please fill out the title of your Project.");
+        return false;
+    } else {
+        return true;
+    }
 }
