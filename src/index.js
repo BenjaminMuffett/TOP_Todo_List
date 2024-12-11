@@ -26,48 +26,75 @@ function validateTodo() {
     }
 }
 
+// function createTodoElement(todoObj,event) {
+//     const parentProjectElement = event.target.parentNode.parentNode;
+//     const todoDiv = document.createElement("div");
+//     todoDiv.classList.add("todo");
+//     for (var key in todoObj) {
+//         let entryLine = document.createElement("p");
+//         entryLine.textContent = `${todoObj[key]}`
+//         todoDiv.appendChild(entryLine);
+//     }
+//     parentProjectElement.appendChild(todoDiv);
+// }
+
 const workspaceDelegation = document.getElementById("workspace");
 workspaceDelegation.addEventListener("click", (event) => {
     if (event.target.classList.contains("addTodo")) {
+        var parentProjectElement = event.target.closest(".project");
         console.log(event.target);
+        console.log(event.target.closest(".project"));
+        const todoDialog = document.querySelector("#newTodo");
 
-    }
-});
+        function createTodoElement() {
+            var todoDiv = document.createElement("div");
+            todoDiv.classList.add("todo");
 
-
-// Related to the modal buttons  
-const todoDialog = document.querySelector("#newTodo");
-const modalTodoForm = document.querySelector("#todo-form");
-
-const cancelBtn = document.querySelector("#cancelBtn");
-cancelBtn.addEventListener("click", (event) => {
-    event.preventDefault();
-    todoDialog.close();
-    // modalTodoForm.reset();
-});
-
-const confirmBtn = document.querySelector("#confirmBtn");
-confirmBtn.addEventListener("click", (event) => {
-    event.preventDefault();
-    if (validateTodo() == true) {
-        todoDialog.close();
-        // modalTodoForm.reset();
-    }
-});
-
-modalTodoForm.addEventListener("keydown", (event) => {
-    if (event.code === 'Enter') {
-        event.preventDefault();
-        if (validateTodo() == true) {
-            // let todoObj = createTodoObject();
-            // console.log(todoObj);
-            // addTodoDOM(todoObj);
-            todoDialog.close();
-            // modalTodoForm.reset();
+            // Related to the modal buttons  
+            
+            const modalTodoForm = document.querySelector("#todo-form");
+            const cancelBtn = document.querySelector("#cancelBtn");
+            cancelBtn.addEventListener("click", (event) => {
+                event.preventDefault();
+                todoDialog.close();
+                modalTodoForm.reset();
+            });
+            const confirmBtn = document.querySelector("#confirmBtn");
+            confirmBtn.addEventListener("click", (event) => {
+                event.preventDefault();
+                let valCheck = validateTodo();
+                if (valCheck == true) {
+                    var todoObj = createTodoObject();
+                    console.log(todoObj);
+                    for (var key in todoObj) {
+                        let entryLine = document.createElement("p");
+                        entryLine.textContent = `${todoObj[key]}`
+                        todoDiv.appendChild(entryLine);
+                    }
+                    todoDialog.close();
+                    modalTodoForm.reset();
+                }
+            });
+            modalTodoForm.addEventListener("keydown", (event) => {
+                if (event.code === 'Enter') {
+                    event.preventDefault();
+                    if (validateTodo() == true) {
+                        let todoObj = createTodoObject();
+                        console.log(todoObj);
+                        todoDialog.close();
+                        modalTodoForm.reset();
+                    }
+                }
+            })
+            // End of modal responsibilities.
+            return todoDiv;
         }
+        todoDialog.showModal();
+
+        let todoDOM = createTodoElement();
+        parentProjectElement.appendChild(todoDOM);
     }
-})
-// End of modal responsibilities.
+});
 
 // Related to Project blocks
 const newProjectBtn = document.querySelector("#create-project");
