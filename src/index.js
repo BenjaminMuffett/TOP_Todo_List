@@ -27,68 +27,49 @@ function createTodoDOM(todoObj) {
     return todoDiv;
 }
 
+function onConfirmClick(parentDiv) {
+    let newTodo = createTodoObject();
+    if (newTodo.title) {
+        let newTodoDiv = createTodoDOM(newTodo);
+        parentDiv.appendChild(newTodoDiv);
+    } else {
+        alert("Please fill out the title of your Todo.")
+    }
+}
+
+let clickedDiv;
 const workspaceDelegation = document.getElementById("workspace");
 workspaceDelegation.addEventListener("click", (event) => {
     if (event.target.classList.contains("addTodo")) {
-        let selectedTitle = bind(event.target.previousElementSibling);
-        console.log(selectedTitle);
-        let selectedProject = selectedTitle.parentNode.parentNode;
-        console.log(selectedProject);
-        // const projects = document.getElementsByClassName("project");
-        // for (let i = 0; i < projects.length; i++) {
-        //     if (projects[i] == event.target.parentNode.parentNode) {
-        //         var parentProjectElement = event.target.parentNode.parentNode;
-        //     }
-        // }
-        // console.log(event.target);
-        // console.log(parentProjectElement);
-        const todoDialog = document.querySelector("#newTodo");
-
-        // Related to the modal buttons  
-        var todoTitled = false;
-        const modalTodoForm = document.querySelector("#todo-form");
-        const cancelBtn = document.querySelector("#cancelBtn");
-        cancelBtn.addEventListener("click", (event) => {
-            event.preventDefault();
-            todoDialog.close();
-            modalTodoForm.reset();
-        });
-        // what if i go one step further and just return a boolean value from confirm button
-        // then if true run the functions outside of its scope?
-        const confirmBtn = document.querySelector("#confirmBtn");
-        confirmBtn.addEventListener("click", (event) => {
-            event.preventDefault();
-            let checkTitleEmpty = document.querySelector("#todo-title").value;
-            if (checkTitleEmpty == false) {
-                // alert("Please fill out the title of your Todo.");
-            } else {
-                todoTitled = true;
-                todoDialog.close();
-                modalTodoForm.reset();
-                onConfirmClick(todoTitled, selectedProject);
-            }
-        });
-
-        modalTodoForm.addEventListener("keydown", (event) => {
-            if (event.code === 'Enter') {
-                event.preventDefault();
-            }
-        })
-        // End of modal responsibilities.
         todoDialog.showModal();
-        console.log(todoTitled);
-
-        function onConfirmClick (valuedTitle,parentDiv) {
-            if (valuedTitle) {
-                let newTodo = createTodoObject();
-                let newTodoDiv = createTodoDOM(newTodo);
-                parentDiv.appendChild(newTodoDiv);
-            } else {
-                alert("Please fill out the title of your Todo.")
-            }
-        };
     }
+    clickedDiv = event.target.parentNode.parentNode;
 });
+
+// Related to the modal buttons 
+const todoDialog = document.querySelector("#newTodo");
+const modalTodoForm = document.querySelector("#todo-form");
+const cancelBtn = document.querySelector("#cancelBtn");
+cancelBtn.addEventListener("click", (event) => {
+    event.preventDefault();
+    todoDialog.close();
+    modalTodoForm.reset();
+});
+const confirmBtn = document.querySelector("#confirmBtn");
+confirmBtn.addEventListener("click", (event) => {
+    event.preventDefault();
+    onConfirmClick(clickedDiv);
+    todoDialog.close();
+    modalTodoForm.reset();
+});
+modalTodoForm.addEventListener("keydown", (event) => {
+    if (event.code === 'Enter') {
+        event.preventDefault();
+    }
+})
+// End of modal responsibilities.
+
+
 
 // Related to Project blocks
 const newProjectBtn = document.querySelector("#create-project");
@@ -122,17 +103,6 @@ function displayProject() {
         return
     };
     let newDiv = createProject(userProject); 
-    // const newTodoBtn = newDiv.querySelector(".addTodo");
-    // newTodoBtn.addEventListener("click", (event) => {
-    //     todoDialog.showModal();
-    //     if (validateTodo() == true) {
-    //         let todoObj = createTodoObject()
-    //         console.log(todoObj);
-    //         let todoElement = createTodoElement(todoObj);
-    //         let selfDivValue = event.target.parentNode.parentNode;
-    //         selfDivValue.appendChild(todoElement);
-    //     }
-    // });
     
     return workspaceDiv.appendChild(newDiv); 
 };
