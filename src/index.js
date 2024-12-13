@@ -21,9 +21,12 @@ function createTodoDOM(todoObj) {
     todoDiv.classList.add("todo");
     for (var key in todoObj) {
         let entryLine = document.createElement("p");
+        // entryLine.setAttribute("contentEditable", true); long text break layout
         entryLine.textContent = `${todoObj[key]}`
         todoDiv.appendChild(entryLine);
     }
+    var prioritySelector = todoDiv.lastChild.textContent;
+    todoDiv.classList.add(prioritySelector);
     return todoDiv;
 }
 
