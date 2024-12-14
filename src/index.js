@@ -25,8 +25,23 @@ function createTodoDOM(todoObj) {
         entryLine.textContent = `${todoObj[key]}`
         todoDiv.appendChild(entryLine);
     }
-    var prioritySelector = todoDiv.lastChild.textContent;
-    todoDiv.classList.add(prioritySelector);
+    var prioritySelector = todoDiv.lastChild;
+    todoDiv.classList.add(prioritySelector.textContent);
+    const btnDiv = document.createElement("div");
+    btnDiv.classList.add("btnDiv");
+    const doneBtn = document.createElement("button");
+    doneBtn.classList.add("doneBtn");
+    doneBtn.textContent = "Done";
+    const editBtn = document.createElement("button");
+    editBtn.classList.add("editBtn");
+    editBtn.textContent = "Edit";
+    const delTodoBtn = document.createElement("button");
+    delTodoBtn.classList.add("delTodo");
+    delTodoBtn.textContent = "Delete";
+    btnDiv.appendChild(doneBtn);
+    btnDiv.appendChild(editBtn);
+    btnDiv.appendChild(delTodoBtn);
+    todoDiv.appendChild(btnDiv);
     return todoDiv;
 }
 
@@ -35,18 +50,35 @@ function onConfirmClick(parentDiv) {
     if (newTodo.title) {
         let newTodoDiv = createTodoDOM(newTodo);
         parentDiv.appendChild(newTodoDiv);
+        
     } else {
         alert("Please fill out the title of your Todo.")
     }
-}
+};
 
-let clickedDiv;
+// const selectDelTodoBtn = Object.values(document.getElementsByClassName("delTodo"));
+// selectDelTodoBtn.forEach(btn => {
+//     btn.addEventListener("click", (event) => {
+//         console.log(event);
+//     })
+// });
+function delTodoBtnFunction() {
+    const selectDelTodoBtn = document.querySelectorAll("delTodo");
+    selectDelTodoBtn.forEach( btn => {
+        btn.addEventListener("click", event => {
+            console.log(event.target);
+        })
+    })
+};
+
+
+let clickedProject;
 const workspaceDelegation = document.getElementById("workspace");
 workspaceDelegation.addEventListener("click", (event) => {
     if (event.target.classList.contains("addTodo")) {
         todoDialog.showModal();
     }
-    clickedDiv = event.target.parentNode.parentNode;
+    clickedProject = event.target.parentNode.parentNode;
 });
 
 // Related to the modal buttons 
@@ -61,7 +93,7 @@ cancelBtn.addEventListener("click", (event) => {
 const confirmBtn = document.querySelector("#confirmBtn");
 confirmBtn.addEventListener("click", (event) => {
     event.preventDefault();
-    onConfirmClick(clickedDiv);
+    onConfirmClick(clickedProject);
     todoDialog.close();
     modalTodoForm.reset();
 });
