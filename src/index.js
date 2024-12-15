@@ -50,27 +50,34 @@ function onConfirmClick(parentDiv) {
     if (newTodo.title) {
         let newTodoDiv = createTodoDOM(newTodo);
         parentDiv.appendChild(newTodoDiv);
-        
+        delTodoBtnFunction();
+        doneTodoBtnFunction();
     } else {
         alert("Please fill out the title of your Todo.")
     }
 };
 
-// const selectDelTodoBtn = Object.values(document.getElementsByClassName("delTodo"));
-// selectDelTodoBtn.forEach(btn => {
-//     btn.addEventListener("click", (event) => {
-//         console.log(event);
-//     })
-// });
 function delTodoBtnFunction() {
-    const selectDelTodoBtn = document.querySelectorAll("delTodo");
-    selectDelTodoBtn.forEach( btn => {
-        btn.addEventListener("click", event => {
-            console.log(event.target);
+    const selectDelTodoBtn = document.getElementsByClassName("delTodo");
+    Array.prototype.forEach.call(selectDelTodoBtn, function(uwu) {
+        uwu.addEventListener("click", event => {
+            let target = event.target.parentNode.parentNode;
+            target.remove();
         })
     })
 };
 
+function doneTodoBtnFunction() {
+    const selectDoneTodoBtn = document.getElementsByClassName("doneBtn");
+    Array.prototype.forEach.call(selectDoneTodoBtn, function(uwu) {
+        uwu.addEventListener("click", event => {
+            let target = event.target.parentNode.parentNode;
+            console.log(target);
+            // target.classList.replace() // pick up here tomorrow
+    
+        })
+    })
+};
 
 let clickedProject;
 const workspaceDelegation = document.getElementById("workspace");
