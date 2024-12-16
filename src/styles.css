@@ -108,10 +108,6 @@ dialog {
     gap: 6px;
 }
 
-div .\3-1 {
-    border: 3px solid #00a651;
-    background-color: #00a651;
-}
 
 div .\31 {
     border: 3px solid #f6de16;
@@ -121,4 +117,9 @@ div .\31 {
 div .\32 {
     border: 3px solid #f42e17;
     background-color: #f42e17;
+}
+
+div .complete {
+    border: 3px solid #00a651;
+    background-color: #00a651;
 }

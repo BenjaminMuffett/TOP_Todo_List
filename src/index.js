@@ -54,28 +54,41 @@ function onConfirmClick(parentDiv) {
         doneTodoBtnFunction();
     } else {
         alert("Please fill out the title of your Todo.")
+        return
     }
 };
 
 function delTodoBtnFunction() {
     const selectDelTodoBtn = document.getElementsByClassName("delTodo");
     Array.prototype.forEach.call(selectDelTodoBtn, function(uwu) {
-        uwu.addEventListener("click", event => {
+        if (uwu.getAttribute("listener") != 'true') {
+            uwu.setAttribute("listener", 'true');
+            uwu.addEventListener("click", event => {
             let target = event.target.parentNode.parentNode;
             target.remove();
         })
+        }
     })
 };
 
 function doneTodoBtnFunction() {
     const selectDoneTodoBtn = document.getElementsByClassName("doneBtn");
     Array.prototype.forEach.call(selectDoneTodoBtn, function(uwu) {
-        uwu.addEventListener("click", event => {
+        if (uwu.getAttribute("listener") != 'true') {
+            uwu.setAttribute("listener", 'true');
+            uwu.addEventListener("click", event => {
             let target = event.target.parentNode.parentNode;
-            console.log(target);
-            // target.classList.replace() // pick up here tomorrow
-    
+
+            if (target.classList.contains("complete")) {
+                target.classList.remove("complete");
+                event.target.textContent = "Done";
+            } else {
+                target.classList.add("complete");
+                event.target.textContent = "Undo";
+            }
         })
+        }
+        
     })
 };
 
