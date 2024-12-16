@@ -52,6 +52,7 @@ function onConfirmClick(parentDiv) {
         parentDiv.appendChild(newTodoDiv);
         delTodoBtnFunction();
         doneTodoBtnFunction();
+        editTodoBtnFunction();
     } else {
         alert("Please fill out the title of your Todo.")
         return
@@ -91,6 +92,39 @@ function doneTodoBtnFunction() {
         
     })
 };
+
+function editTodoBtnFunction() {
+    const selectEditTodoBtn = document.getElementsByClassName("editBtn");
+    Array.prototype.forEach.call(selectEditTodoBtn, function(edit) {
+        if (edit.getAttribute("listener") != 'true') {
+            edit.setAttribute("listener", 'true');
+            edit.addEventListener("click", event => {
+                let target = event.target.parentNode.parentNode.childNodes;
+                console.log(target);
+                console.log(event.target);
+                console.log(event.target.textContent);  // fix this tomorrow
+                for (const node of target) {
+                    if (event.target.textContent == 'Edit') {
+                        event.target.textContent = 'Save';
+                        if (node instanceof HTMLParagraphElement) {
+                        node.contentEditable = true;
+                        }
+                    } else if (event.target.textContent == 'Save') {
+                        event.target.textContent = 'Edit';
+                        if (node instanceof HTMLParagraphElement) {
+                            node.contentEditable = false;
+                        }
+
+                    }
+
+                    
+                }
+
+                        
+            })
+        }
+    })
+}
 
 let clickedProject;
 const workspaceDelegation = document.getElementById("workspace");
