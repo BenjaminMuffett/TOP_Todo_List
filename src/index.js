@@ -10,8 +10,16 @@ function createTodoObject() {
 
     const title = todoTitle.value;
     const info = todoDescription.value;
-    const dueDate = todoDueDate.value;
+    const dueDate = dateChecker(todoDueDate);
     const importance = todoPriority.value;
+
+    function dateChecker(dueDate) {
+        if (dueDate.value == '') {
+            return '';
+        } else {
+            return "Get done by: " + formatRelative(endOfDay(dueDate.value), endOfDay(new Date()));
+        }
+    }
 
     return { title, info, dueDate, importance };
 }
@@ -21,12 +29,12 @@ function createTodoDOM(todoObj) {
     todoDiv.classList.add("todo");
     for (var key in todoObj) {
         let entryLine = document.createElement("p");
-        // entryLine.setAttribute("contentEditable", true); long text break layout
         entryLine.textContent = `${todoObj[key]}`
         todoDiv.appendChild(entryLine);
     }
     var prioritySelector = todoDiv.lastChild;
     todoDiv.classList.add(prioritySelector.textContent);
+    prioritySelector.style.display = 'none';
     const btnDiv = document.createElement("div");
     btnDiv.classList.add("btnDiv");
     const doneBtn = document.createElement("button");
@@ -103,22 +111,17 @@ function editTodoBtnFunction() {
                 console.log(target);
                 console.log(event.target);
                 console.log(event.target.textContent);  // fix this tomorrow
-                for (const node of target) {
-                    if (event.target.textContent == 'Edit') {
-                        event.target.textContent = 'Save';
-                        if (node instanceof HTMLParagraphElement) {
-                        node.contentEditable = true;
-                        }
-                    } else if (event.target.textContent == 'Save') {
-                        event.target.textContent = 'Edit';
-                        if (node instanceof HTMLParagraphElement) {
-                            node.contentEditable = false;
-                        }
-
-                    }
-
-                    
+                console.log(target[0]);
+                if (event.target.textContent == "Edit") {
+                    event.target.textContent = "Save";
+                    target[0].contentEditable = true;
+                    target[1].contentEditable = true;
+                } else if (event.target.textContent == "Save") {
+                    event.target.textContent = "Edit";
+                    target[0].contentEditable = false;
+                    target[1].contentEditable = false;
                 }
+
 
                         
             })
@@ -199,6 +202,8 @@ function displayProject() {
 function validateNewProject(name) {
     if (name == '') {
         alert("Please fill out the title of your Project.");
+        return false;
+    } else if (name == null) {
         return false;
     } else {
         return true;

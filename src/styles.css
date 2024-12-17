@@ -92,7 +92,7 @@ button:hover {
     padding-bottom: 12px;
 }
 
-.todo:hover {
+p[contenteditable]:hover {
     cursor: pointer;
 }
 
