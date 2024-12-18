@@ -61,6 +61,7 @@ function onConfirmClick(parentDiv) {
         delTodoBtnFunction();
         doneTodoBtnFunction();
         editTodoBtnFunction();
+        savingDOMDisplay();
     } else {
         alert("Please fill out the title of your Todo.")
         return
@@ -75,6 +76,7 @@ function delTodoBtnFunction() {
             uwu.addEventListener("click", event => {
             let target = event.target.parentNode.parentNode;
             target.remove();
+            savingDOMDisplay();
         })
         }
     })
@@ -167,6 +169,7 @@ modalTodoForm.addEventListener("keydown", (event) => {
 const newProjectBtn = document.querySelector("#create-project");
 newProjectBtn.addEventListener("click", () => {
     displayProject();
+    savingDOMDisplay();
 });
 
 function createProject(projectName) {
@@ -209,3 +212,26 @@ function validateNewProject(name) {
         return true;
     }
 }
+
+if (localStorage.getItem("")) {
+    //do something 
+} else {
+    //do something else
+}
+
+function savingDOMDisplay() {
+    
+    const workspaceSave = document.getElementById("workspace");
+    const projects = workspaceSave.getElementsByClassName("project");
+    console.log(projects.length);
+    for (let project of projects) {
+        console.log(project.children)
+        let title = project.querySelector(".title").textContent;
+        console.log(title);
+        var toString = project.innerHTML;
+        console.log(toString);
+        localStorage.setItem(title, JSON.stringify(toString));
+    }
+
+}
+savingDOMDisplay();
