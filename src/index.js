@@ -29,6 +29,7 @@ function createTodoDOM(todoObj) {
     todoDiv.classList.add("todo");
     for (var key in todoObj) {
         let entryLine = document.createElement("p");
+        entryLine.classList.add(key);
         entryLine.textContent = `${todoObj[key]}`
         todoDiv.appendChild(entryLine);
     }
@@ -97,6 +98,7 @@ function doneTodoBtnFunction() {
                 target.classList.add("complete");
                 event.target.textContent = "Undo";
             }
+            savingDOMDisplay();
         })
         }
         
@@ -112,7 +114,7 @@ function editTodoBtnFunction() {
                 let target = event.target.parentNode.parentNode.childNodes;
                 console.log(target);
                 console.log(event.target);
-                console.log(event.target.textContent);  // fix this tomorrow
+                console.log(event.target.textContent);
                 console.log(target[0]);
                 if (event.target.textContent == "Edit") {
                     event.target.textContent = "Save";
@@ -123,7 +125,7 @@ function editTodoBtnFunction() {
                     target[0].contentEditable = false;
                     target[1].contentEditable = false;
                 }
-
+                savingDOMDisplay();
 
                         
             })
@@ -169,7 +171,7 @@ modalTodoForm.addEventListener("keydown", (event) => {
 const newProjectBtn = document.querySelector("#create-project");
 newProjectBtn.addEventListener("click", () => {
     displayProject();
-    savingDOMDisplay();
+    // savingDOMDisplay();
 });
 
 function createProject(projectName) {
@@ -213,25 +215,37 @@ function validateNewProject(name) {
     }
 }
 
-if (localStorage.getItem("")) {
-    //do something 
-} else {
-    //do something else
-}
-
-function savingDOMDisplay() {
-    
+function savingDOMDisplay() {    
     const workspaceSave = document.getElementById("workspace");
     const projects = workspaceSave.getElementsByClassName("project");
     console.log(projects.length);
+    // localStorage.setItem("workspace", workspaceSave.innerHTML); // functionality removed return
     for (let project of projects) {
-        console.log(project.children)
-        let title = project.querySelector(".title").textContent;
-        console.log(title);
-        var toString = project.innerHTML;
-        console.log(toString);
-        localStorage.setItem(title, JSON.stringify(toString));
+        console.log(project.children);
+        let projectTitle = project.querySelector(".title").textContent;
+        let todoList = project.getElementsByClassName("todo");
+        let projectArray = []
+        for (let todo of todoList) {
+            let todoObject = {}
+            todoObject.todoTitle = todo.querySelector(".title").textContent;
+            todoObject.todoDescription = todo.querySelector(".info").textContent;
+            todoObject.todoDate = todo.querySelector(".dueDate").textContent;
+            todoObject.todoPriority = todo.querySelector(".importance").textContent;
+            projectArray.push(todoObject)
+            console.log(todoObject)
+        }
+        localStorage.setItem(projectTitle, JSON.stringify(projectArray));
     }
 
 }
-savingDOMDisplay();
+
+function getFromStorage() {
+    if (localStorage.length > 0) {
+        const workspaceSave = document.getElementById("workspace");
+        workspaceSave.innerHTML = '';
+        let savedKeys = Object.keys(localStorage);
+        for (let key in savedKeys) {
+            
+        }
+    }
+}
