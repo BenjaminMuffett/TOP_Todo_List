@@ -62,7 +62,8 @@ function onConfirmClick(parentDiv) {
         delTodoBtnFunction();
         doneTodoBtnFunction();
         editTodoBtnFunction();
-        savingDOMDisplay();
+        let keyName = parentDiv.querySelector(".title").textContent;
+        saveLocalFunction(newTodo,keyName);
     } else {
         alert("Please fill out the title of your Todo.")
         return
@@ -77,7 +78,6 @@ function delTodoBtnFunction() {
             uwu.addEventListener("click", event => {
             let target = event.target.parentNode.parentNode;
             target.remove();
-            savingDOMDisplay();
         })
         }
     })
@@ -98,7 +98,6 @@ function doneTodoBtnFunction() {
                 target.classList.add("complete");
                 event.target.textContent = "Undo";
             }
-            savingDOMDisplay();
         })
         }
         
@@ -124,10 +123,7 @@ function editTodoBtnFunction() {
                     event.target.textContent = "Edit";
                     target[0].contentEditable = false;
                     target[1].contentEditable = false;
-                }
-                savingDOMDisplay();
-
-                        
+                }     
             })
         }
     })
@@ -171,7 +167,6 @@ modalTodoForm.addEventListener("keydown", (event) => {
 const newProjectBtn = document.querySelector("#create-project");
 newProjectBtn.addEventListener("click", () => {
     displayProject();
-    // savingDOMDisplay();
 });
 
 function createProject(projectName) {
@@ -190,7 +185,7 @@ function createProject(projectName) {
     btnDiv.textContent = '+';
     headerDiv.appendChild(btnDiv);
     projectDiv.appendChild(headerDiv);
-    return projectDiv
+    return projectDiv;
 }
 
 function displayProject() {
@@ -214,6 +209,11 @@ function validateNewProject(name) {
         return true;
     }
 }
+let testArray = [];
+function saveLocalFunction(newTodo,keyName) {
+    // keyName.array.push(newTodo);
+    localStorage.setItem(JSON.stringify(keyName), JSON.stringify(testArray));
+}
 
 function savingDOMDisplay() {    
     const workspaceSave = document.getElementById("workspace");
@@ -224,15 +224,15 @@ function savingDOMDisplay() {
         console.log(project.children);
         let projectTitle = project.querySelector(".title").textContent;
         let todoList = project.getElementsByClassName("todo");
-        let projectArray = []
+        let projectArray = [];
         for (let todo of todoList) {
             let todoObject = {}
             todoObject.todoTitle = todo.querySelector(".title").textContent;
             todoObject.todoDescription = todo.querySelector(".info").textContent;
             todoObject.todoDate = todo.querySelector(".dueDate").textContent;
             todoObject.todoPriority = todo.querySelector(".importance").textContent;
-            projectArray.push(todoObject)
-            console.log(todoObject)
+            projectArray.push(todoObject);
+            console.log(todoObject);
         }
         localStorage.setItem(projectTitle, JSON.stringify(projectArray));
     }
@@ -243,9 +243,22 @@ function getFromStorage() {
     if (localStorage.length > 0) {
         const workspaceSave = document.getElementById("workspace");
         workspaceSave.innerHTML = '';
+        // let savedKeys = Object.keys(localStorage).reduce(function(obj, str) {
+        //     obj[str] = JSON.parse(localStorage.getItem(str));
+        //     return obj
+        // }, []); // order gets messed up during load but idk
         let savedKeys = Object.keys(localStorage);
-        for (let key in savedKeys) {
-            
+        console.log(savedKeys);
+        for (let key of savedKeys) {
+            let keyDiv = createProject(key);
+            // console.log(JSON.parse(localStorage.getItem(key)));
+            for (let obj of JSON.parse(localStorage.getItem(key))) {
+                // console.log(obj);
+                keyDiv.appendChild(createTodoDOM(obj));
+            }
+            workspaceSave.appendChild(keyDiv);
         }
     }
 }
+
+// getFromStorage();
