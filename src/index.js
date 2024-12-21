@@ -62,8 +62,8 @@ function onConfirmClick(parentDiv) {
         delTodoBtnFunction();
         doneTodoBtnFunction();
         editTodoBtnFunction();
-        let keyName = parentDiv.querySelector(".title").textContent;
-        saveLocalFunction(newTodo,keyName);
+
+        savingDOMDisplay();
     } else {
         alert("Please fill out the title of your Todo.")
         return
@@ -195,8 +195,7 @@ function displayProject() {
         return
     };
     let newDiv = createProject(userProject); 
-    
-    return workspaceDiv.appendChild(newDiv); 
+    return workspaceDiv.appendChild(newDiv)//, savingDOMDisplay(); 
 };
 
 function validateNewProject(name) {
@@ -209,34 +208,27 @@ function validateNewProject(name) {
         return true;
     }
 }
-let testArray = [];
-function saveLocalFunction(newTodo,keyName) {
-    // keyName.array.push(newTodo);
-    localStorage.setItem(JSON.stringify(keyName), JSON.stringify(testArray));
-}
 
 function savingDOMDisplay() {    
     const workspaceSave = document.getElementById("workspace");
     const projects = workspaceSave.getElementsByClassName("project");
     console.log(projects.length);
-    // localStorage.setItem("workspace", workspaceSave.innerHTML); // functionality removed return
     for (let project of projects) {
         console.log(project.children);
         let projectTitle = project.querySelector(".title").textContent;
         let todoList = project.getElementsByClassName("todo");
-        let projectArray = [];
+        const projectArray = [];
         for (let todo of todoList) {
-            let todoObject = {}
-            todoObject.todoTitle = todo.querySelector(".title").textContent;
-            todoObject.todoDescription = todo.querySelector(".info").textContent;
-            todoObject.todoDate = todo.querySelector(".dueDate").textContent;
-            todoObject.todoPriority = todo.querySelector(".importance").textContent;
-            projectArray.push(todoObject);
-            console.log(todoObject);
+            let todoArray = {};
+            todoArray.todoTitle = todo.querySelector(".title").textContent;
+            todoArray.todoDescription = todo.querySelector(".info").textContent;
+            todoArray.todoDate = todo.querySelector(".dueDate").textContent;
+            todoArray.todoPriority = todo.querySelector(".importance").textContent;
+            projectArray.push(todoArray);
+            console.log(todoArray);
         }
         localStorage.setItem(projectTitle, JSON.stringify(projectArray));
     }
-
 }
 
 function getFromStorage() {
@@ -251,14 +243,19 @@ function getFromStorage() {
         console.log(savedKeys);
         for (let key of savedKeys) {
             let keyDiv = createProject(key);
-            // console.log(JSON.parse(localStorage.getItem(key)));
-            for (let obj of JSON.parse(localStorage.getItem(key))) {
-                // console.log(obj);
-                keyDiv.appendChild(createTodoDOM(obj));
-            }
+            console.log(keyDiv);
             workspaceSave.appendChild(keyDiv);
+            for (let obj of JSON.parse(localStorage.getItem(key))) {
+                console.log(obj);
+                let returnedTodo = createTodoDOM(obj);
+                console.log(returnedTodo);
+                keyDiv.appendChild(returnedTodo);
+                delTodoBtnFunction();
+                doneTodoBtnFunction();
+                editTodoBtnFunction();
+            }
         }
     }
 }
 
-// getFromStorage();
+getFromStorage();
