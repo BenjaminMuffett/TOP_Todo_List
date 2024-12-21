@@ -1,5 +1,5 @@
 import "./styles.css";
-import { formatRelative, sub, subDays, endOfDay, endOfToday } from "date-fns";
+import { formatRelative, endOfDay } from "date-fns";
 
 
 function createTodoObject() {
@@ -62,8 +62,6 @@ function onConfirmClick(parentDiv) {
         delTodoBtnFunction();
         doneTodoBtnFunction();
         editTodoBtnFunction();
-
-        savingDOMDisplay();
     } else {
         alert("Please fill out the title of your Todo.")
         return
@@ -78,6 +76,7 @@ function delTodoBtnFunction() {
             uwu.addEventListener("click", event => {
             let target = event.target.parentNode.parentNode;
             target.remove();
+            savingDOMDisplay();
         })
         }
     })
@@ -99,8 +98,7 @@ function doneTodoBtnFunction() {
                 event.target.textContent = "Undo";
             }
         })
-        }
-        
+        }    
     })
 };
 
@@ -123,6 +121,7 @@ function editTodoBtnFunction() {
                     event.target.textContent = "Edit";
                     target[0].contentEditable = false;
                     target[1].contentEditable = false;
+                    savingDOMDisplay();
                 }     
             })
         }
@@ -153,6 +152,7 @@ confirmBtn.addEventListener("click", (event) => {
     onConfirmClick(clickedProject);
     todoDialog.close();
     modalTodoForm.reset();
+    savingDOMDisplay();
 });
 modalTodoForm.addEventListener("keydown", (event) => {
     if (event.code === 'Enter') {
@@ -195,7 +195,7 @@ function displayProject() {
         return
     };
     let newDiv = createProject(userProject); 
-    return workspaceDiv.appendChild(newDiv)//, savingDOMDisplay(); 
+    return workspaceDiv.appendChild(newDiv), savingDOMDisplay(); 
 };
 
 function validateNewProject(name) {
@@ -208,24 +208,22 @@ function validateNewProject(name) {
         return true;
     }
 }
+// End of project blocks
 
 function savingDOMDisplay() {    
     const workspaceSave = document.getElementById("workspace");
     const projects = workspaceSave.getElementsByClassName("project");
-    console.log(projects.length);
     for (let project of projects) {
-        console.log(project.children);
         let projectTitle = project.querySelector(".title").textContent;
         let todoList = project.getElementsByClassName("todo");
         const projectArray = [];
         for (let todo of todoList) {
             let todoArray = {};
-            todoArray.todoTitle = todo.querySelector(".title").textContent;
-            todoArray.todoDescription = todo.querySelector(".info").textContent;
-            todoArray.todoDate = todo.querySelector(".dueDate").textContent;
-            todoArray.todoPriority = todo.querySelector(".importance").textContent;
+            todoArray.title = todo.querySelector(".title").textContent;
+            todoArray.info = todo.querySelector(".info").textContent;
+            todoArray.dueDate = todo.querySelector(".dueDate").textContent;
+            todoArray.importance = todo.querySelector(".importance").textContent;
             projectArray.push(todoArray);
-            console.log(todoArray);
         }
         localStorage.setItem(projectTitle, JSON.stringify(projectArray));
     }
@@ -235,20 +233,12 @@ function getFromStorage() {
     if (localStorage.length > 0) {
         const workspaceSave = document.getElementById("workspace");
         workspaceSave.innerHTML = '';
-        // let savedKeys = Object.keys(localStorage).reduce(function(obj, str) {
-        //     obj[str] = JSON.parse(localStorage.getItem(str));
-        //     return obj
-        // }, []); // order gets messed up during load but idk
         let savedKeys = Object.keys(localStorage);
-        console.log(savedKeys);
         for (let key of savedKeys) {
             let keyDiv = createProject(key);
-            console.log(keyDiv);
             workspaceSave.appendChild(keyDiv);
             for (let obj of JSON.parse(localStorage.getItem(key))) {
-                console.log(obj);
                 let returnedTodo = createTodoDOM(obj);
-                console.log(returnedTodo);
                 keyDiv.appendChild(returnedTodo);
                 delTodoBtnFunction();
                 doneTodoBtnFunction();
