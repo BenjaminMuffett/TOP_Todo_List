@@ -12,6 +12,7 @@ function createTodoObject() {
     const info = todoDescription.value;
     const dueDate = dateChecker(todoDueDate);
     const importance = todoPriority.value;
+    const doneStatus = '';
 
     function dateChecker(dueDate) {
         if (dueDate.value == '') {
@@ -21,7 +22,7 @@ function createTodoObject() {
         }
     }
 
-    return { title, info, dueDate, importance };
+    return { doneStatus, title, info, dueDate, importance };
 }
 
 function createTodoDOM(todoObj) {
@@ -32,7 +33,9 @@ function createTodoDOM(todoObj) {
         entryLine.classList.add(key);
         entryLine.textContent = `${todoObj[key]}`
         todoDiv.appendChild(entryLine);
-    }
+    };
+    const completeSelector = todoDiv.firstChild;
+    completeSelector.style.display = 'none';
     var prioritySelector = todoDiv.lastChild;
     todoDiv.classList.add(prioritySelector.textContent);
     prioritySelector.style.display = 'none';
@@ -89,14 +92,20 @@ function doneTodoBtnFunction() {
             uwu.setAttribute("listener", 'true');
             uwu.addEventListener("click", event => {
             let target = event.target.parentNode.parentNode;
-
-            if (target.classList.contains("complete")) {
+            let blankDiv = event.target.parentNode.parentNode.firstChild;
+            if (target.classList.contains("complete") && event.target.textContent == "Undo") {
                 target.classList.remove("complete");
                 event.target.textContent = "Done";
+                blankDiv.textContent = '';
+                console.log(target);
+                savingDOMDisplay();
             } else {
                 target.classList.add("complete");
                 event.target.textContent = "Undo";
+                blankDiv.textContent = 'complete';
+                savingDOMDisplay();
             }
+            
         })
         }    
     })
@@ -115,12 +124,12 @@ function editTodoBtnFunction() {
                 console.log(target[0]);
                 if (event.target.textContent == "Edit") {
                     event.target.textContent = "Save";
-                    target[0].contentEditable = true;
                     target[1].contentEditable = true;
+                    target[2].contentEditable = true;
                 } else if (event.target.textContent == "Save") {
                     event.target.textContent = "Edit";
-                    target[0].contentEditable = false;
                     target[1].contentEditable = false;
+                    target[2].contentEditable = false;
                     savingDOMDisplay();
                 }     
             })
@@ -219,6 +228,7 @@ function savingDOMDisplay() {
         const projectArray = [];
         for (let todo of todoList) {
             let todoArray = {};
+            todoArray.doneStatus = todo.querySelector(".doneStatus").textContent;
             todoArray.title = todo.querySelector(".title").textContent;
             todoArray.info = todo.querySelector(".info").textContent;
             todoArray.dueDate = todo.querySelector(".dueDate").textContent;
@@ -239,6 +249,10 @@ function getFromStorage() {
             workspaceSave.appendChild(keyDiv);
             for (let obj of JSON.parse(localStorage.getItem(key))) {
                 let returnedTodo = createTodoDOM(obj);
+                let completeCheck = returnedTodo.querySelector(".doneStatus");
+                if (completeCheck.textContent == 'complete') {
+                    returnedTodo.classList.add('complete');
+                };
                 keyDiv.appendChild(returnedTodo);
                 delTodoBtnFunction();
                 doneTodoBtnFunction();
